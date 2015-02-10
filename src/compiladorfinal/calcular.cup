@@ -1,0 +1,146 @@
+package compiladorfinal;
+import java.io.*;
+import java_cup.runtime.*; 
+
+parser code
+{:
+  public void report_error(String message, Object info) {
+        StringBuffer m = new StringBuffer("Error");
+        //System.out.println("Mensaje: "+message);
+        //System.out.println("info: "+info.toString());
+
+        //Control de errores
+        if("#2".equals(info.toString())){
+            System.out.println("Falta el primer numero");
+        }
+        if("#10".equals(info.toString())){
+            System.out.println("Falta el operador");
+        }
+        if("#4".equals(info.toString())){
+            System.out.println("Falta el segundo numero o faltan datos");
+        }
+        if("#0".equals(info.toString())){
+            System.out.println("Falta el ; al final de linea o el archivo esta vacio ");
+        }
+
+        if(info instanceof java_cup.runtime.Symbol) {
+          java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
+          /* Comprueba si el numero de línea es mayor o igual que cero */
+          String linea="";
+          String columna="";
+
+          if(s.left >= 0) {
+            linea=""+(s.right+1);
+            m.append(" en linea "+(s.right+1));
+            /*Comprueba si el numero de columna es mayor o igual que cero */
+            if (s.right >= 0)
+                columna=""+(s.left+1);
+              
+            }
+            m.append(" y columna "+(s.right+1));
+            if (!linea.equals("")&& !columna.equals("")) {
+                System.out.println("Error detectado en linea "+linea+" columna "+ columna);
+
+            }
+            //System.err.println(m);
+
+        }
+
+        
+        
+    }
+
+    
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+
+    public void Suma(String a,String b){
+        double a1=Integer.parseInt(a);
+        double b1=Integer.parseInt(b);
+        System.out.println("!Es una suma aritmetica!");
+        System.out.println("Resultado:");
+        System.out.println(a+ " + "+ b +" = "+(a1+b1));
+
+    }
+    public void Resta(String a,String b){
+        double a1=Integer.parseInt(a);
+        double b1=Integer.parseInt(b);
+        System.out.println("!Es una resta aritmetica!");
+        System.out.println("Resultado:");
+        System.out.println(a+ " - "+ b +" = "+(a1-b1));
+
+    }
+    public void Multiplicacion(String a,String b){
+        double a1=Integer.parseInt(a);
+        double b1=Integer.parseInt(b);
+        System.out.println("!Es una multiplicacion aritmética!");
+        System.out.println("Resultado:");
+        System.out.println(a+ " * "+ b +" = "+(a1*b1));
+
+    }
+    public void Division(String a,String b){
+        double a1=Integer.parseInt(a);
+        double b1=Integer.parseInt(b);
+        System.out.println("!Es una division aritmética!");
+        System.out.println("Resultado:");
+        System.out.println(a+ " / "+ b +" = "+(a1/b1));
+
+    }
+
+    public void Potencia(String a,String b){
+        double a1=Integer.parseInt(a);
+        double b1=Integer.parseInt(b);
+        System.out.println("!Es una potencia aritmética!");
+        System.out.println("Resultado:");
+        System.out.println(a+ "**"+ b +" = "+Math.pow(a1,b1));
+
+    }
+
+    public void Raiz(String a){
+        double a1=Double.parseDouble(a);
+        System.out.println("!Es una raiz cuadrada!");
+        System.out.println("Resultado:");
+        System.out.println("sqrt "+ a +" = "+Math.sqrt(a1));
+
+    }
+
+
+
+    public  void main(String arg){
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(
+                    new AnalizadorLexico( new FileReader(arg)));
+            Object result = asin.parse().value;
+            System.out.println("*** Ejecucion correcta ***");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+:}
+
+terminal SUMA,NUMERO,PUNTOCOMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,RAIZCUADRADA,
+ID;
+
+non terminal Object expresion;
+
+/* ­­­­­­­­­­­­­­ Declaración de la gramática  ­­­­­­­­­­­ */
+
+expresion::= ID:n1 SUMA:op ID:n2 PUNTOCOMA {: parser.Suma(n1.toString(),n2.toString()); :}
+            |ID:n1 RESTA:op ID:n2 PUNTOCOMA {: parser.Resta(n1.toString(),n2.toString());  :} 
+            |ID:n1 MULTIPLICACION:op ID:n2 PUNTOCOMA {: parser.Multiplicacion(n1.toString(),n2.toString());  :}
+            |ID:n1 DIVISION:op ID:n2 PUNTOCOMA {: parser.Division(n1.toString(),n2.toString());  :}
+            |ID:n1 POTENCIA:op ID:n2 PUNTOCOMA {: parser.Potencia(n1.toString(),n2.toString());  :}
+            |RAIZCUADRADA:op ID:n1 PUNTOCOMA {: parser.Raiz(n1.toString());  :}
+            ;
+
+
+            
+
+
+
+
+
+
+
