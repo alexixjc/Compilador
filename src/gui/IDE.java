@@ -5,6 +5,7 @@
  */
 package gui;
 
+import compiladorfinal.archivos;
 import compiladorfinal.Ejecutor;
 import java.io.File;
 import java.io.IOException;
@@ -138,7 +139,7 @@ public class IDE extends javax.swing.JFrame {
             try {
                 archivo=ar.abrirArchivo(file.getAbsoluteFile().toPath().toString());
                 
-                System.out.println(ar.convertir(file.getAbsoluteFile().toPath().toString()));
+                //System.out.println(ar.convertir(file.getAbsoluteFile().toPath().toString()));
                 //ar.guardar("dir.txt", file.getAbsoluteFile().toPath().toString());
                 codigo.setText(archivo);
             } catch (IOException ex) {

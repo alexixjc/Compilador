@@ -121,7 +121,12 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
             System.out.println("Falta el segundo numero o faltan datos");
         }
         if("#0".equals(info.toString())){
-            System.out.println("Falta el ; al final de linea o el archivo esta vacio ");
+            System.out.println("Falta el punto y coma al final de linea, "
+                    + "o el archivo esta vacio, o has ingresado caracter especial");
+        }
+        if("#6".equals(info.toString())|"#7".equals(info.toString())
+                |"#8".equals(info.toString())){
+            System.out.println("Operador ingresado, faltan datos para realizar la operacion");
         }
 
         if(info instanceof java_cup.runtime.Symbol) {
@@ -146,9 +151,7 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
             //System.err.println(m);
 
         }
-
-        
-        
+   
     }
 
     
@@ -157,64 +160,95 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
         System.exit(1);
     }
 
+    public boolean errorLetra(String a, String b){
+        double a1=0;
+        double b1=0;
+        try {
+            a1=Double.parseDouble(a);
+        } catch (NumberFormatException e) {
+            System.out.println("Error se esperaba un numero");
+            return true;
+        }
+        try {
+            b1=Double.parseDouble(b);
+        } catch (NumberFormatException e) {
+            System.out.println("Error se esperaba un numero");
+            return true;
+        }
+        return false;
+    }
+
     public void Suma(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una suma aritmetica!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " + "+ b +" = "+(a1+b1));
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una suma aritmetica!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " + "+ b +" = "+(a1+b1));
+            
+        }
+       
 
     }
+    
     public void Resta(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una resta aritmetica!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " - "+ b +" = "+(a1-b1));
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una resta aritmetica!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " - "+ b +" = "+(a1-b1));
+        }
 
     }
     public void Multiplicacion(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una multiplicacion aritmética!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " * "+ b +" = "+(a1*b1));
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una multiplicacion aritmética!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " * "+ b +" = "+(a1*b1));
+        }
 
     }
     public void Division(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una division aritmética!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " / "+ b +" = "+(a1/b1));
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una division aritmética!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " / "+ b +" = "+(a1/b1));
+        }
 
     }
 
     public void Potencia(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una potencia aritmética!");
-        System.out.println("Resultado:");
-        System.out.println(a+ "**"+ b +" = "+Math.pow(a1,b1));
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una potencia aritmética!");
+            System.out.println("Resultado:");
+            System.out.println(a+ "**"+ b +" = "+Math.pow(a1,b1));
+        }
 
     }
 
     public void Raiz(String a){
-        double a1=Double.parseDouble(a);
-        System.out.println("!Es una raiz cuadrada!");
-        System.out.println("Resultado:");
-        System.out.println("sqrt "+ a +" = "+Math.sqrt(a1));
+        if (errorLetra(a, "52")!=true) {
+            double a1=Double.parseDouble(a);
+            System.out.println("!Es una raiz cuadrada!");
+            System.out.println("Resultado:");
+            System.out.println("sqrt "+ a +" = "+Math.sqrt(a1));
+        }
 
     }
-
-
 
     public  void main(String arg){
         try {
             AnalizadorSintactico asin = new AnalizadorSintactico(
                     new AnalizadorLexico( new FileReader(arg)));
             Object result = asin.parse().value;
-            System.out.println("*** Ejecucion correcta ***");
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }

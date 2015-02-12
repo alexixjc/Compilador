@@ -1,32 +1,46 @@
 package compiladorfinal;
+//Importación de paquetes necesarios
 import java.io.*;
 import java_cup.runtime.*; 
 
 parser code
 {:
+	//Código que reporta los errores sintácticos encontrados
   public void report_error(String message, Object info) {
         StringBuffer m = new StringBuffer("Error");
-        //System.out.println("Mensaje: "+message);
-        //System.out.println("info: "+info.toString());
-
-        //Control de errores
+        
+        //Controla de error cuando no se ingresa el primer termino de operación
         if("#2".equals(info.toString())){
             System.out.println("Falta el primer numero");
         }
+		//Controla de error cuando no se ingresa el operador
         if("#10".equals(info.toString())){
             System.out.println("Falta el operador");
         }
+		//Controla de error cuando no se ha ingresado el segundo termino o 
+		//faltan datos para la operación
         if("#4".equals(info.toString())){
             System.out.println("Falta el segundo numero o faltan datos");
         }
+		//Controla de error cuando falta el punto y coma al final de linea, el 
+		//archivo esta vacio, o cuando se ingresa caracter especial
         if("#0".equals(info.toString())){
-            System.out.println("Falta el ; al final de linea o el archivo esta vacio ");
+            System.out.println("Falta el punto y coma al final de linea, "
+                    + "o el archivo esta vacio, o has ingresado caracter especial");
+        }
+		//Controla de error cuando se ha ingresado solo el operador o faltan datos 
+		//para realizar la operación
+        if("#6".equals(info.toString())|"#7".equals(info.toString())
+                |"#8".equals(info.toString())){
+            System.out.println("Operador ingresado, faltan datos para realizar la"+ 
+			"operacion");
         }
 
         if(info instanceof java_cup.runtime.Symbol) {
+		//Importación de symbol para revisar lo errores en linea y columna
           java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
-          /* Comprueba si el numero de línea es mayor o igual que cero */
-          String linea="";
+		//Variables que almacenan la linea y columna
+		  String linea="";
           String columna="";
 
           if(s.left >= 0) {
@@ -39,15 +53,14 @@ parser code
             }
             m.append(" y columna "+(s.right+1));
             if (!linea.equals("")&& !columna.equals("")) {
+				//Presenta el numero de linea y columna del error encontrado  
                 System.out.println("Error detectado en linea "+linea+" columna "+ columna);
 
             }
-            //System.err.println(m);
+            
 
         }
-
-        
-        
+   
     }
 
     
@@ -56,82 +69,132 @@ parser code
         System.exit(1);
     }
 
+	//Método que captura el error cuando se ingresa letras en vez de números
+    public boolean errorLetra(String a, String b){
+        double a1=0;
+        double b1=0;
+        try {
+            a1=Double.parseDouble(a);
+        } catch (NumberFormatException e) {
+            System.out.println("Error se esperaba un numero");
+            return true;
+        }
+        try {
+            b1=Double.parseDouble(b);
+        } catch (NumberFormatException e) {
+            System.out.println("Error se esperaba un numero");
+            return true;
+        }
+        return false;
+    }
+
+	//Metodo que realiza la suma 
     public void Suma(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una suma aritmetica!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " + "+ b +" = "+(a1+b1));
+		//Si se cumple la condición de ser un numero se realiza la operación
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una suma aritmetica!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " + "+ b +" = "+(a1+b1));
+            
+        }
+       
 
     }
+    //Método que realiza la resta
     public void Resta(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una resta aritmetica!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " - "+ b +" = "+(a1-b1));
+		//Si se cumple la condición de ser un numero se realiza la operación
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una resta aritmetica!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " - "+ b +" = "+(a1-b1));
+        }
 
     }
+	//Método que realiza la multiplicación
     public void Multiplicacion(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una multiplicacion aritmética!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " * "+ b +" = "+(a1*b1));
+		//Si se cumple la condición de ser un numero se realiza la operación
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una multiplicacion aritmética!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " * "+ b +" = "+(a1*b1));
+        }
 
     }
+	//Método que realiza la división
     public void Division(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una division aritmética!");
-        System.out.println("Resultado:");
-        System.out.println(a+ " / "+ b +" = "+(a1/b1));
+		//Si se cumple la condición de ser un numero se realiza la operación
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una division aritmética!");
+            System.out.println("Resultado:");
+            System.out.println(a+ " / "+ b +" = "+(a1/b1));
+        }
 
     }
-
+	//Método que realiza la potencia
     public void Potencia(String a,String b){
-        double a1=Integer.parseInt(a);
-        double b1=Integer.parseInt(b);
-        System.out.println("!Es una potencia aritmética!");
-        System.out.println("Resultado:");
-        System.out.println(a+ "**"+ b +" = "+Math.pow(a1,b1));
+		//Si se cumple la condición de ser un numero se realiza la operación
+        if (errorLetra(a, b)!=true) {
+            double a1=Integer.parseInt(a);
+            double b1=Integer.parseInt(b);
+            System.out.println("!Es una potencia aritmética!");
+            System.out.println("Resultado:");
+            System.out.println(a+ "**"+ b +" = "+Math.pow(a1,b1));
+        }
 
     }
-
+	//Método que realiza la Raiz cuadrada
     public void Raiz(String a){
-        double a1=Double.parseDouble(a);
-        System.out.println("!Es una raiz cuadrada!");
-        System.out.println("Resultado:");
-        System.out.println("sqrt "+ a +" = "+Math.sqrt(a1));
+		//Si se cumple la condición de ser un numero se realiza la operación
+        if (errorLetra(a, "52")!=true) {
+            double a1=Double.parseDouble(a);
+            System.out.println("!Es una raiz cuadrada!");
+            System.out.println("Resultado:");
+            System.out.println("sqrt "+ a +" = "+Math.sqrt(a1));
+        }
 
     }
 
-
-
+	//Método ejecutor del AnalizadorSintactico
     public  void main(String arg){
         try {
+			//Invoca a la clase AnalizadorSintactico recibiendo 
+			//como parametro un archivo
             AnalizadorSintactico asin = new AnalizadorSintactico(
                     new AnalizadorLexico( new FileReader(arg)));
-            Object result = asin.parse().value;
-            System.out.println("*** Ejecucion correcta ***");
+			//Presenta los resultados del análisis sintáctico
+            Object result = asin.parse().value; 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 :}
-
+//Símbolos terminales y no terminales 
+//Estos  terminales contienen los tokens que encontró el analizador sintáctico
 terminal SUMA,NUMERO,PUNTOCOMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,RAIZCUADRADA,
 ID;
-
+//Los no terminales contienen la estructura que debe tener el archivo a ejecutarse
 non terminal Object expresion;
-
 /* ­­­­­­­­­­­­­­ Declaración de la gramática  ­­­­­­­­­­­ */
-
+//Declaración de la estructura
+            //Acepta entradas de la forma 89 + 2; y presenta un resultado de la operación
 expresion::= ID:n1 SUMA:op ID:n2 PUNTOCOMA {: parser.Suma(n1.toString(),n2.toString()); :}
+			//Acepta entradas de la forma 89 - 2; y presenta un resultado de la operación
             |ID:n1 RESTA:op ID:n2 PUNTOCOMA {: parser.Resta(n1.toString(),n2.toString());  :} 
+			//Acepta entradas de la forma 89 * 2; y presenta un resultado de la operación
             |ID:n1 MULTIPLICACION:op ID:n2 PUNTOCOMA {: parser.Multiplicacion(n1.toString(),n2.toString());  :}
+			//Acepta entradas de la forma 89 / 2; y presenta un resultado de la operación
             |ID:n1 DIVISION:op ID:n2 PUNTOCOMA {: parser.Division(n1.toString(),n2.toString());  :}
+			//Acepta entradas de la forma 89**2; y presenta un resultado de la operación
             |ID:n1 POTENCIA:op ID:n2 PUNTOCOMA {: parser.Potencia(n1.toString(),n2.toString());  :}
+			//Acepta entradas de la forma sqrt 89; y presenta un resultado de la operación
             |RAIZCUADRADA:op ID:n1 PUNTOCOMA {: parser.Raiz(n1.toString());  :}
             ;
 
